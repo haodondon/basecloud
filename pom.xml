@@ -16,6 +16,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>basecloud-oauth</module>
+        <module>basecloud-generation-code</module>
     </modules>
 
     <properties>

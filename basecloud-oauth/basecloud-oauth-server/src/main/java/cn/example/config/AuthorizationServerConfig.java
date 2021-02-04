@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.config.annotation.builders.JdbcClientDetailsServiceBuilder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -23,6 +22,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import javax.sql.DataSource;
@@ -56,8 +57,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     /**
-     *
-     *
      * 第一种 授权码模式
      *      第一步
      *          获取授权码
@@ -79,10 +78,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      *          使用用户名密码获取accessToken
      *          http://localhost:9000/oauth/token?grant_type=password&username=admin&password=123456&client_id=client_1&client_secret=123456&scope=all
      *
+     *
+     */
+
+    /**
+     * 用来配置客户端详情服务（ClientDetailsService），客户端详情信息在这里进行初始化
      * @param clients
      * @throws Exception
      */
-
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         // 添加授权用户
@@ -98,14 +101,40 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     }
 
+    /**
+     * 用来配置令牌（token）的访问端点（url）和令牌服务(token services)
+     * @param endpoints
+     * @throws Exception
+     */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.tokenStore(tokenStore()).authenticationManager(authenticationManager)
+        endpoints.accessTokenConverter(jwtAccessTokenConverter())
+//                .tokenStore(tokenStore())
+                .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService());// 必须设置
-        // UserDetailsService
-        // 否则刷新token 时会报错
     }
 
+    /**
+     * 使用非对称加密算法来对Token进行签名
+     * @return
+     */
+    @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+
+        final JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        // 导入证书
+        KeyStoreKeyFactory keyStoreKeyFactory =
+                new KeyStoreKeyFactory(new ClassPathResource("keystore.jks"), "mypass".toCharArray());
+        converter.setKeyPair(keyStoreKeyFactory.getKeyPair("mytest"));
+
+        return converter;
+    }
+
+    /**
+     * 用来配置令牌端点的安全约束
+     * @param security
+     * @throws Exception
+     */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.tokenKeyAccess("permitAll()").checkTokenAccess("permitAll()")
@@ -132,7 +161,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return daoAuthenticationProvider;
     }
 
-    // 设置添加用户信息,正常应该从数据库中读取
+    /**
+     * 设置添加用户信息,正常应该从数据库中读取
+     * @return
+     */
     @Bean
     UserDetailsService userDetailsService() {
         InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager();
@@ -143,6 +175,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return userDetailsService;
     }
 
+    /**
+     * 配置密码加密方式
+     * @return
+     */
     @Bean
     PasswordEncoder passwordEncoder() {
         // 加密方式

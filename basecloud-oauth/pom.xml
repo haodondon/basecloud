@@ -19,6 +19,7 @@
 
     <modules>
         <module>basecloud-oauth-server</module>
+        <module>basecloud-user</module>
     </modules>
 
 </project>
