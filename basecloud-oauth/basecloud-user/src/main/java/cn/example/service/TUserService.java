@@ -1,16 +1,13 @@
 package cn.example.service;
 
-import cn.example.vo.TUserVo;
-import com.baomidou.mybatisplus.extension.service.IService;
-
 /**
  * <p>
  *  服务类
  * </p>
  *
  * @author 一枚路过的程序猿
- * @since 2021-02-04
+ * @since 2021-02-05
  */
-public interface TUserService extends IService<TUserVo> {
+public interface TUserService {
 
 }

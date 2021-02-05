@@ -1,9 +1,10 @@
 package cn.example.controller;
 
 
+import cn.example.service.TUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -11,11 +12,14 @@ import org.springframework.stereotype.Controller;
  * </p>
  *
  * @author 一枚路过的程序猿
- * @since 2021-02-04
+ * @since 2021-02-05
  */
-@Controller
+@RestController
 @RequestMapping("/tUserVo")
 public class TUserController {
+
+    @Autowired
+    TUserService tUserService;
 
 }
 

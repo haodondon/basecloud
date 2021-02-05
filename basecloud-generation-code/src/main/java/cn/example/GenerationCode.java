@@ -84,7 +84,7 @@ public class GenerationCode {
         strategy.setNaming(NamingStrategy.underline_to_camel);
 
         // 需要生成的表
-        strategy.setInclude(new String[]{"t_user"});
+        strategy.setInclude(new String[]{"t_user","t_menu","t_role","t_role_menu","t_user_role"});
         strategy.setSuperServiceClass(null);
         strategy.setSuperServiceImplClass(null);
         strategy.setSuperMapperClass(null);

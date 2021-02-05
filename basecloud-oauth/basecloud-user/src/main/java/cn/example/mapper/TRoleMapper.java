@@ -1,16 +1,16 @@
 package cn.example.mapper;
 
-import cn.example.vo.TUserVo;
+import cn.example.vo.TRoleVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
- *  Mapper 接口
+ * 角色表 Mapper 接口
  * </p>
  *
  * @author 一枚路过的程序猿
  * @since 2021-02-05
  */
-public interface TUserMapper extends BaseMapper<TUserVo> {
+public interface TRoleMapper extends BaseMapper<TRoleVo> {
 
 }
