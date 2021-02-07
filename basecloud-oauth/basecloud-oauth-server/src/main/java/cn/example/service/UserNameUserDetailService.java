@@ -1,5 +1,11 @@
 package cn.example.service;
 
+import cn.example.feign.UserFeign;
+import cn.example.util.Result;
+import cn.example.vo.UserDetailVo;
+import cn.example.vo.UserVo;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,6 +21,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserNameUserDetailService implements UserDetailsService {
 
+    @Autowired
+    private UserFeign userFeign;
+
     /**
      * 完善用户信息
      * @param s
@@ -24,10 +33,17 @@ public class UserNameUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
 
+        Result<UserVo> result = this.userFeign.loadUserByUsername(s);
+        if (result.getData() == null) {
+            throw new UsernameNotFoundException("用户名或密码错误");
+        }
 
-        System.out.println(s);
+        if(result.getData().getUserFrozen() == 1){
+            throw new UsernameNotFoundException("用户已被锁定");
+        }
 
-        return User.builder().username("admin").password(new BCryptPasswordEncoder().encode("123456")).authorities("USER").build();
+        return new UserDetailVo(result.getData());
+
     }
 
 }

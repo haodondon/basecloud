@@ -1,7 +1,0 @@
-spring:
-  datasource:
-    username: root
-    password: 123456
-    url: jdbc:mysql://192.168.101.24:3306/ldd_shopping?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    type: com.alibaba.druid.pool.DruidDataSource

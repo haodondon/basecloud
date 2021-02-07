@@ -27,6 +27,7 @@ import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFacto
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import javax.sql.DataSource;
+import java.security.KeyPair;
 
 /**
  * @author 一枚路过的程序猿
@@ -111,23 +112,23 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints.accessTokenConverter(jwtAccessTokenConverter())
 //                .tokenStore(tokenStore())
                 .authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService());// 必须设置
+                .userDetailsService(userDetailsService);// 必须设置
     }
 
     /**
-     * 使用非对称加密算法来对Token进行签名
-     * @return
+     * 使用非对称加密算法对token签名
      */
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
+        final JwtAccessTokenConverter converter = new TokenConfig();
 
-        final JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         // 导入证书
         KeyStoreKeyFactory keyStoreKeyFactory =
                 new KeyStoreKeyFactory(new ClassPathResource("keystore.jks"), "mypass".toCharArray());
         converter.setKeyPair(keyStoreKeyFactory.getKeyPair("mytest"));
 
         return converter;
+
     }
 
     /**
@@ -137,7 +138,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security.tokenKeyAccess("permitAll()").checkTokenAccess("permitAll()")
+        security.tokenKeyAccess("permitAll()")
+                // 开启/oauth/check_token验证端口认证权限访问
+//                .checkTokenAccess("isAuthenticated()")
+                .checkTokenAccess("permitAll()")
                 .allowFormAuthenticationForClients();// 允许表单登录
 
     }
@@ -155,7 +159,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Bean
     public AuthenticationProvider daoAuhthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService());
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;

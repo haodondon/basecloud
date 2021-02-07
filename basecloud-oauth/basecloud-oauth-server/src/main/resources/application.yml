@@ -5,6 +5,8 @@ server:
 spring:
   application:
     name: oauth-server
+  profiles:
+    active: dev
   main:
     allow-bean-definition-overriding: true
 

@@ -4,6 +4,7 @@ import cn.example.fallback.UserFallBack;
 import cn.example.util.Result;
 import cn.example.vo.UserVo;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -11,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @Title: 用户服务接口
  * @date 2021/2/7 10:09
  */
-@FeignClient(value = "user-service",fallback = UserFallBack.class)
+//@FeignClient(value = "user-service",fallback = UserFallBack.class)
+@FeignClient(url = "http://localhost:9001",name = "user-service",fallback = UserFallBack.class)
 public interface UserFeign {
 
     /**
@@ -19,6 +21,7 @@ public interface UserFeign {
      * @param userAccount
      * @return
      */
+    @GetMapping("/user/loadUserByUsername")
     Result<UserVo> loadUserByUsername(@RequestParam("userAccount") String userAccount);
 
 }

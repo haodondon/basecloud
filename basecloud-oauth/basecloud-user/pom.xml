@@ -14,7 +14,7 @@
     <modules>
         <module>basecloud-user-feign</module>
         <module>basecloud-user-feign-vo</module>
-        <module>basecloud-user-api</module>
+        <module>basecloud-user-web</module>
     </modules>
 
     <properties>
