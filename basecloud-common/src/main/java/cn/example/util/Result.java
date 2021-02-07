@@ -39,6 +39,13 @@ public class Result<T> {
     @ApiModelProperty(value = "返回数据",name = "data")
     private T data;
 
+    public Result(T data) {
+        this.success = ResultCode.SUCCESS.isSuccess();
+        this.code = ResultCode.SUCCESS.code;
+        this.message = ResultCode.SUCCESS.message;
+        this.data = data;
+    }
+
     public Result(ResultCode code) {
         this.success = code.success;
         this.code = code.code;

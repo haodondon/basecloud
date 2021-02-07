@@ -18,7 +18,6 @@
         <module>basecloud-oauth</module>
         <module>basecloud-generation-code</module>
         <module>basecloud-common</module>
-        <module>basecloud-feign</module>
     </modules>
 
     <properties>

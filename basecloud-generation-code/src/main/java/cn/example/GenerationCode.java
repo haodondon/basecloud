@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
  */
 public class GenerationCode {
 
+    //main函数
     public static void main(String[] args) {
 
         AutoGenerator autoGenerator = new AutoGenerator();
@@ -27,6 +28,8 @@ public class GenerationCode {
 
         //生成文件输出根目录
         gc.setOutputDir(oPath + "/basecloud-oauth/basecloud-user/src/main/java");
+
+//       int i = 1 /0;
 
         //生成完成后不弹出文件框
         gc.setOpen(false);
@@ -47,7 +50,7 @@ public class GenerationCode {
         gc.setBaseColumnList(false);
 
         // 作者
-        gc.setAuthor("一枚路过的程序猿");
+        gc.setAuthor("haodongdong");
         gc.setSwagger2(true);
 
         // 自定义文件命名，注意 %s 会自动填充表实体属性！
@@ -56,7 +59,7 @@ public class GenerationCode {
         gc.setServiceImplName("%sServiceImpl");
         gc.setMapperName("%sMapper");
         gc.setXmlName("%sMapper");
-        gc.setEntityName("%sVo");
+        gc.setEntityName("%sDo");
         autoGenerator.setGlobalConfig(gc);
 
         // 数据源配置
@@ -65,7 +68,7 @@ public class GenerationCode {
         //设置数据库类型
         dsc.setDbType(DbType.MYSQL);
 
-        dsc.setDriverName("com.mysql.cj.jdbc.Driver");
+        dsc.setDriverName("com.mysql.jdbc.Driver");
 
         //用户名
         dsc.setUsername("root");
@@ -74,7 +77,7 @@ public class GenerationCode {
         dsc.setPassword("root");
 
         //指定数据库
-        dsc.setUrl("jdbc:mysql://192.168.10.234:3306/basecloud-user?characterEncoding=UTF-8");
+        dsc.setUrl("jdbc:mysql://192.168.10.234:3306/basecloud-user?serverTimezone=UTC");
         autoGenerator.setDataSource(dsc);
 
         // 策略配置
@@ -84,16 +87,17 @@ public class GenerationCode {
         strategy.setNaming(NamingStrategy.underline_to_camel);
 
         // 需要生成的表
-        strategy.setInclude(new String[]{"t_user","t_menu","t_role","t_role_menu","t_user_role"});
+        strategy.setInclude(new String[]{
+                /*"t_menu","t_role","t_role_menu","t_user","t_user_role"*/});
         strategy.setSuperServiceClass(null);
         strategy.setSuperServiceImplClass(null);
         strategy.setSuperMapperClass(null);
         strategy.setEntityLombokModel(true);
 
         //去除表前缀
-        strategy.setTablePrefix("an_");
+        strategy.setTablePrefix("t_");
         //去除字段前缀
-        strategy.setFieldPrefix("");
+//        strategy.setFieldPrefix("t_");
         autoGenerator.setStrategy(strategy);
 
         // 包配置
@@ -104,7 +108,7 @@ public class GenerationCode {
         pc.setService("service");
         pc.setServiceImpl("service.impl");
         pc.setMapper("mapper");
-        pc.setEntity("vo");
+        pc.setEntity("model");
         pc.setXml("mapper");
         autoGenerator.setPackageInfo(pc);
         // 执行生成
