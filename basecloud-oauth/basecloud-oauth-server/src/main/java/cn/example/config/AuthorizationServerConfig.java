@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -24,6 +25,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import javax.sql.DataSource;
@@ -52,9 +54,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      @Autowired
      private UserNameUserDetailService userDetailsService;
 
+    /**
+     * redis工厂，默认使用lettue
+     */
+    @Autowired
+    public RedisConnectionFactory redisConnectionFactory;
+
     @Bean
     public TokenStore tokenStore() {
-        return new JdbcTokenStore(dataSource); /// 使用Jdbctoken store
+        return new RedisTokenStore(redisConnectionFactory); /// 使用Jdbctoken store
     }
 
     /**

@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -42,6 +43,15 @@ public class UserController {
         return new Result<UserVo>(this.userService.loadUserByUsername(userAccount));
 
     }
+
+    @GetMapping("/login")
+    @PreAuthorize("hasAnyAuthority('USER_ADMIN')")
+    public Result<String> loadUserByUsername(){
+
+        return new Result<>("登录成功");
+
+    }
+
 
 }
 
