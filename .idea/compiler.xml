@@ -7,12 +7,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="basecloud-user-feign" />
         <module name="basecloud-user-web" />
         <module name="basecloud-common" />
         <module name="basecloud-generation-code" />
-        <module name="basecloud-oauth-server" />
         <module name="basecloud-user-feign-vo" />
+        <module name="basecloud-oauth-gateway" />
+        <module name="basecloud-user-feign" />
+        <module name="basecloud-oauth-server" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -26,6 +27,7 @@
       <module name="basecloud-feign" options="-parameters" />
       <module name="basecloud-generation-code" options="-parameters" />
       <module name="basecloud-oauth" options="" />
+      <module name="basecloud-oauth-gateway" options="-parameters" />
       <module name="basecloud-oauth-server" options="-parameters" />
       <module name="basecloud-user" options="-parameters" />
       <module name="basecloud-user-api" options="-parameters" />

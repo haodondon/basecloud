@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/basecloud-common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/basecloud-generation-code/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/basecloud-oauth/basecloud-oauth-gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/basecloud-oauth/basecloud-oauth-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/basecloud-oauth/basecloud-user/basecloud-user-feign-vo/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/basecloud-oauth/basecloud-user/basecloud-user-feign/src/main/java" charset="UTF-8" />
