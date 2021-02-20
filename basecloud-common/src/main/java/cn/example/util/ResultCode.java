@@ -8,7 +8,8 @@ package cn.example.util;
 public enum ResultCode {
 
     SUCCESS(true,0,"操作成功"),
-
+    INVALID_TOKEN(false,1,"无效token"),
+    NO_AUTHORIZATION(false,1,"暂无权限访问，请联系管理员"),
     FAIL(false,1,"操作失败");
 
     //此处扩展业务状态码

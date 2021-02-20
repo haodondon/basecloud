@@ -1,0 +1,23 @@
+server:
+  port: 9003
+spring:
+  application:
+    name: oauth-gateway
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: 'http://localhost:8000/getPublicKey'    # 获取JWT验签公钥请求路径
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true # 启用服务发现
+          lower-case-service-id: true
+
+ignore:
+  urls: #配置白名单路径
+    - "/actuator/**"
+    - "/auth/oauth/token"

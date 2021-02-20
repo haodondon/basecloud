@@ -8,28 +8,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-
 import javax.sql.DataSource;
-import java.security.KeyPair;
 
 /**
  * @author 一枚路过的程序猿
@@ -44,15 +32,14 @@ import java.security.KeyPair;
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
-    @Qualifier("authenticationManager")
     private AuthenticationManager authenticationManager;
 
     @Autowired
     @Qualifier("dataSource")
     private DataSource dataSource;
 
-     @Autowired
-     private UserNameUserDetailService userDetailsService;
+    @Autowired
+    private UserNameUserDetailService userDetailsService;
 
     /**
      * redis工厂，默认使用lettue
@@ -152,50 +139,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .checkTokenAccess("permitAll()")
                 .allowFormAuthenticationForClients();// 允许表单登录
 
-    }
-
-    @Bean
-    AuthenticationManager authenticationManager() {
-        AuthenticationManager authenticationManager = new AuthenticationManager() {
-            public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-                return daoAuhthenticationProvider().authenticate(authentication);
-            }
-        };
-        return authenticationManager;
-    }
-
-    @Bean
-    public AuthenticationProvider daoAuhthenticationProvider() {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-        daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        return daoAuthenticationProvider;
-    }
-
-    /**
-     * 设置添加用户信息,正常应该从数据库中读取
-     * @return
-     */
-    @Bean
-    UserDetailsService userDetailsService() {
-        InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager();
-        userDetailsService.createUser(User.withUsername("admin").password(passwordEncoder().encode("123456"))
-                .authorities("ROLE_USER").build());
-        userDetailsService.createUser(User.withUsername("root").password(passwordEncoder().encode("123456"))
-                .authorities("ROLE_USER").build());
-        return userDetailsService;
-    }
-
-    /**
-     * 配置密码加密方式
-     * @return
-     */
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        // 加密方式
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        return passwordEncoder;
     }
 
 }
