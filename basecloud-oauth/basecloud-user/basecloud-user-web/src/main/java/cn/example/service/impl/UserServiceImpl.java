@@ -27,4 +27,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDo> implements 
     public UserVo loadUserByUsername(String userAccount) {
         return this.baseMapper.loadUserByUsername(userAccount);
     }
+
+    /**
+     * 根据手机号查看用户相关信息
+     * @param userPhone
+     * @return
+     */
+    @Override
+    public UserVo loadUserByUserPhone(String userPhone) {
+        return this.baseMapper.loadUserByUserPhone(userPhone);
+    }
+
 }

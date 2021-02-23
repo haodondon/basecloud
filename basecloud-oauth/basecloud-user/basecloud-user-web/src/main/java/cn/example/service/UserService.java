@@ -20,4 +20,11 @@ public interface UserService extends IService<UserDo> {
      * @return
      */
     UserVo loadUserByUsername(String userAccount);
+
+    /**
+     * 根据手机号查看用户相关信息
+     * @param userPhone
+     * @return
+     */
+    UserVo loadUserByUserPhone(String userPhone);
 }

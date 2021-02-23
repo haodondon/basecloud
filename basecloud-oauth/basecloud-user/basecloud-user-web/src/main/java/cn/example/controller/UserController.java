@@ -10,12 +10,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -41,6 +36,17 @@ public class UserController {
     public Result<UserVo> loadUserByUsername(@RequestParam("userAccount") String userAccount){
 
         return new Result<UserVo>(this.userService.loadUserByUsername(userAccount));
+
+    }
+
+    @ApiOperation(value = "根据手机号查看用户相关信息",hidden = true)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userPhone", value = "手机号", paramType = "path", required = true, dataType = "String"),
+    })
+    @GetMapping("/loadUserByUserPhone/{userPhone}")
+    public Result<UserVo> loadUserByUserPhone(@PathVariable String userPhone){
+
+        return new Result<UserVo>(this.userService.loadUserByUserPhone(userPhone));
 
     }
 

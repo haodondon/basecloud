@@ -2,13 +2,14 @@ package cn.example.model;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.time.LocalDateTime;
-import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -41,6 +42,9 @@ public class UserDo implements Serializable {
 
     @ApiModelProperty(value = "用户头像")
     private String userPic;
+
+    @ApiModelProperty(value = "用户手机号")
+    private String userPhone;
 
     @ApiModelProperty(value = "用户冻结状态 0-否 1-是")
     private Integer userFrozen;

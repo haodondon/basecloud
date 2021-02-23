@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -32,9 +35,6 @@ import javax.sql.DataSource;
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
     @Qualifier("dataSource")
     private DataSource dataSource;
 
@@ -46,6 +46,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Autowired
     public RedisConnectionFactory redisConnectionFactory;
+
+    @Autowired
+    private AuthenticationProvider authenticationProvider;
 
     @Bean
     public TokenStore tokenStore() {
@@ -97,6 +100,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     }
 
+    @Bean
+    AuthenticationManager authenticationManager() {
+        AuthenticationManager authenticationManager = new AuthenticationManager() {
+            public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+                return authenticationProvider.authenticate(authentication);
+            }
+        };
+        return authenticationManager;
+    }
+
     /**
      * 用来配置令牌（token）的访问端点（url）和令牌服务(token services)
      * @param endpoints
@@ -106,7 +119,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.accessTokenConverter(jwtAccessTokenConverter())
 //                .tokenStore(tokenStore())
-                .authenticationManager(authenticationManager)
+                .authenticationManager(authenticationManager())
                 .userDetailsService(userDetailsService);// 必须设置
     }
 

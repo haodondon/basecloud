@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @author 一枚路过的程序猿
  * @Title: 数据响应对象
@@ -13,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "数据响应对象")
-public class Result<T> {
+public class Result<T> implements Serializable {
 
     /**
      * 是否成功
@@ -24,7 +26,7 @@ public class Result<T> {
     /**
      * 返回码
      */
-    @ApiModelProperty(value = "返回码",example = "1000")
+    @ApiModelProperty(value = "返回码",example = "0")
     private Integer code;
 
     /**

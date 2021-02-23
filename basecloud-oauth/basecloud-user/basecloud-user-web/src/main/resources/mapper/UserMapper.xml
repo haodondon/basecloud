@@ -10,6 +10,7 @@
         <result column="user_password" property="userPassword" />
         <result column="user_pic" property="userPic" />
         <result column="user_frozen" property="userFrozen" />
+        <result column="user_phone" property="userPhone" />
         <result column="create_time" property="createTime" />
         <result column="status" property="status" />
     </resultMap>
@@ -45,5 +46,24 @@
     </select>
 
     <!-- 根据用户名查看用户相关信息 end  -->
+
+    <!-- 根据手机号查看用户相关信息 -->
+    <select id="loadUserByUserPhone" resultType="cn.example.vo.UserVo">
+        SELECT
+            u.`id` AS userId,
+            u.user_account AS userAccount,
+            u.user_password AS userPassword,
+            u.user_frozen AS userFrozen,
+            r.`role_identify` AS authorities
+        FROM
+            t_user u
+                LEFT JOIN t_user_role ur
+                          ON u.`id` = ur.`user_id`
+                LEFT JOIN t_role r
+                          ON ur.`role_id` = r.`id`
+                              AND r.`status` = 0
+        WHERE u.`status` = 0
+          AND u.`user_phone` = #{userPhone}
+    </select>
 
 </mapper>

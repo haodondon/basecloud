@@ -5,6 +5,7 @@ import cn.example.util.Result;
 import cn.example.vo.UserVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -23,5 +24,8 @@ public interface UserFeign {
      */
     @GetMapping("/user/loadUserByUsername")
     Result<UserVo> loadUserByUsername(@RequestParam("userAccount") String userAccount);
+
+    @GetMapping("/user/loadUserByUserPhone/{userPhone}")
+    Result<UserVo> loadUserByUserPhone(@PathVariable String userPhone);
 
 }
