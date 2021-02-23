@@ -76,6 +76,7 @@ CREATE TABLE `t_user` (
   `user_password` varchar(100) DEFAULT NULL COMMENT '用户登录密码',
   `user_pic` varchar(500) DEFAULT NULL COMMENT '用户头像',
   `user_frozen` int(1) DEFAULT NULL COMMENT '用户冻结状态 0-否 1-是',
+  `user_phone` varchar(11) DEFAULT NULL COMMENT '用户手机号',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   `status` int(1) DEFAULT '0' COMMENT '是否删除 0-否 1-是',
   PRIMARY KEY (`id`)
@@ -83,7 +84,7 @@ CREATE TABLE `t_user` (
 
 /*Data for the table `t_user` */
 
-insert  into `t_user`(`id`,`user_name`,`user_account`,`user_password`,`user_pic`,`user_frozen`,`create_time`,`status`) values ('1','超级管理员','admin','$2a$10$XHdyjJgoX2Gw868XaHfFYeqEO7MuZ7jICHjpKEZhjhqR04EbUFVAy',NULL,0,'2020-11-29 08:50:49',0);
+insert  into `t_user`(`id`,`user_name`,`user_account`,`user_password`,`user_pic`,`user_frozen`,`user_phone`,`create_time`,`status`) values ('1','超级管理员','admin','$2a$10$XHdyjJgoX2Gw868XaHfFYeqEO7MuZ7jICHjpKEZhjhqR04EbUFVAy',NULL,0,NULL,'2020-11-29 08:50:49',0);
 
 /*Table structure for table `t_user_role` */
 
