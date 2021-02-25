@@ -1,2 +1,5 @@
 # Project exclude paths
 /basecloud-oauth/basecloud-oauth-server/target/
+/basecloud-oauth/basecloud-oauth-gateway/target/
+/basecloud-oauth/basecloud-user/target/
+/basecloud-oauth/basecloud-user/basecloud-user-web/
