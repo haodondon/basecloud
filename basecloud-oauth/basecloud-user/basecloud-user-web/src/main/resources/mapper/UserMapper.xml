@@ -48,7 +48,7 @@
     <!-- 根据用户名查看用户相关信息 end  -->
 
     <!-- 根据手机号查看用户相关信息 -->
-    <select id="loadUserByUserPhone" resultType="cn.example.vo.UserVo">
+    <select id="loadUserByUserPhone" resultType="cn.example.vo.UserVo" resultMap="loadUserByUsernameMap">
         SELECT
             u.`id` AS userId,
             u.user_account AS userAccount,
